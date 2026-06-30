@@ -34,10 +34,10 @@ struct Robot
     {
         using namespace sml;
         return make_transition_table(
-        *state<Idle>+ event<Start> = state<Driving>,
+        *state<Idle>+ event<Start>[battery_ok] = state<Driving>,
             state<Driving> + event<Error> = state<Fault>,
-            state<Driving> + event<Stop> / [] { std::cout << "Received <<Stop>> Event\n";}  = state<Idle>,
-            state<Fault> + event<Reset>  / [] { std::cout << "Received <<Reset>> Event\n";} = state<Idle>
+            state<Driving> + event<Stop>  = state<Idle>,
+            state<Fault> + event<Reset>  = state<Idle>
         );
     }
 };
@@ -50,31 +50,32 @@ int main()
         std::cout << "Current state is: "<< state.c_str() << '\n';
     });
 
-    robot.process_event(start());
+    robot.process_event(Start{});
 
     robot.visit_current_states([](auto state) {
         std::cout << "Current state is: "<< state.c_str() << '\n';
     });
 
-    robot.process_event(stop());
+    robot.process_event(Stop{});
 
     robot.visit_current_states([](auto state) {
         std::cout << "Current state is: "<< state.c_str() << '\n';
     });
 
-    robot.process_event(start());
+    robot.process_event(Start{});
 
     robot.visit_current_states([](auto state) {
         std::cout << "Current state is: "<< state.c_str() << '\n';
     });
 
-    robot.process_event(error());
+    robot.process_event(Error{});
 
     robot.visit_current_states([](auto state) {
         std::cout << "Current state is: "<< state.c_str() << '\n';
     });
 
-    robot.process_event(reset());
+
+    robot.process_event(Reset{});
 
     robot.visit_current_states([](auto state) {
         std::cout << "Current state is: "<< state.c_str() << '\n';
