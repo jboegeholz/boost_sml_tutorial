@@ -31,9 +31,7 @@ struct Robot
     {
         using namespace sml;
         return make_transition_table(
-        *state<Idle>+ (StartEvent)[([](const RobotContext& ctx) {
-        return ctx.battery_ok;
-    })] = state<Driving>,
+        *state<Idle>+ (StartEvent)[([](const RobotContext& ctx) {return ctx.battery_ok;})] = state<Driving>,
             state<Driving> + ErrorEvent = state<Fault>,
             state<Driving> + StopEvent  = state<Idle>,
             state<Fault> + ResetEvent  = state<Idle>
@@ -41,7 +39,7 @@ struct Robot
     }
 };
 
-TEST(GuardsWithObjects, TestGuardTrue) {
+TEST(GuardsWithDependencyInjection, TestGuardTrue) {
     RobotContext ctx;
     sml::sm<Robot> robot{ctx};
     robot.process_event(Start{});
@@ -50,7 +48,7 @@ TEST(GuardsWithObjects, TestGuardTrue) {
         EXPECT_STREQ(state.c_str(), "Driving");
     });
 }
-TEST(GuardsWithObjects, TestGuardFalse) {
+TEST(GuardsWithDependencyInjection, TestGuardFalse) {
     RobotContext ctx;
     ctx.battery_ok = false;
     sml::sm<Robot> robot{ctx};

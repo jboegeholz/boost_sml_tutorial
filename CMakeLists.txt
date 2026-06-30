@@ -51,7 +51,7 @@ target_link_libraries(
 )
 
 add_executable(06_sm_with_guard_functors_test
-        tests/06_sm_with_guard_functors_test.cpp
+        tests/06_sm_with_guard_and_di_test.cpp
 )
 
 target_link_libraries(
