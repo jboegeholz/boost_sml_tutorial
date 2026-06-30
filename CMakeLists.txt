@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 4.2)
 
 project(boost_sml_test LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 include(CTest)
@@ -39,6 +39,15 @@ target_link_libraries(
         PRIVATE
         GTest::gtest_main
 )
+add_executable(04_sm_with_functor_actions_test
+        tests/04_sm_with_functor_actions_test.cpp
+)
+
+target_link_libraries(
+        04_sm_with_functor_actions_test
+        PRIVATE
+        GTest::gtest_main
+)
 
 add_executable(05_sm_with_guards_test
         tests/05_sm_with_guards_test.cpp
@@ -59,9 +68,20 @@ target_link_libraries(
         PRIVATE
         GTest::gtest_main
 )
+
+add_executable(07_sm_with_udl_test
+        tests/07_sm_with_udl_test.cpp
+)
+target_link_libraries(
+        07_sm_with_udl_test
+        PRIVATE
+        GTest::gtest_main
+)
 include(GoogleTest)
 gtest_discover_tests(00_google_test)
 gtest_discover_tests(01_simple_state_machine_test)
 gtest_discover_tests(02_sm_with_actions_test)
+gtest_discover_tests(04_sm_with_functor_actions_test)
 gtest_discover_tests(05_sm_with_guards_test)
 gtest_discover_tests(06_sm_with_guard_functors_test)
+gtest_discover_tests(07_sm_with_udl_test)

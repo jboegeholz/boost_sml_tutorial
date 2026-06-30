@@ -1,5 +1,6 @@
 #include <iostream>
-#include "boost/sml.hpp"
+#include <gtest/gtest.h>
+#include "../boost/sml.hpp"
 
 
 namespace sml = boost::sml;
@@ -17,22 +18,22 @@ struct Reset{};
 
 struct start_action {
     void operator()() const {
-        std::cout << "Start\n";
+        std::cout << "Action: Start";
     }
 };
 struct stop_action {
     void operator()() const {
-        std::cout << "Stop\n";
+        std::cout << "Action: Stop";
     }
 };
 struct error_action {
     void operator()() const {
-        std::cout << "Error\n";
+        std::cout << "Action: Error";
     }
 };
 struct reset_action {
     void operator()() const {
-        std::cout << "Reset\n";
+        std::cout << "Action: Reset";
     }
 };
 struct Robot
@@ -51,42 +52,24 @@ struct Robot
     }
 };
 
-int main()
-{
+TEST(SMWithFunctorActions, TestTransition) {
     sml::sm<Robot> robot{};
 
-    robot.visit_current_states([](auto state) {
-        std::cout << "Current state is: "<< state.c_str() << '\n';
-    });
-
+    testing::internal::CaptureStdout();
     robot.process_event(Start{});
+    EXPECT_EQ(testing::internal::GetCapturedStdout(), "Action: Start");
 
-    robot.visit_current_states([](auto state) {
-        std::cout << "Current state is: "<< state.c_str() << '\n';
-    });
-
+    testing::internal::CaptureStdout();
     robot.process_event(Stop{});
-
-    robot.visit_current_states([](auto state) {
-        std::cout << "Current state is: "<< state.c_str() << '\n';
-    });
+    EXPECT_EQ(testing::internal::GetCapturedStdout(), "Action: Stop");
 
     robot.process_event(Start{});
 
-    robot.visit_current_states([](auto state) {
-        std::cout << "Current state is: "<< state.c_str() << '\n';
-    });
-
+    testing::internal::CaptureStdout();
     robot.process_event(Error{});
+    EXPECT_EQ(testing::internal::GetCapturedStdout(), "Action: Error");
 
-    robot.visit_current_states([](auto state) {
-        std::cout << "Current state is: "<< state.c_str() << '\n';
-    });
-
-
+    testing::internal::CaptureStdout();
     robot.process_event(Reset{});
-
-    robot.visit_current_states([](auto state) {
-        std::cout << "Current state is: "<< state.c_str() << '\n';
-    });
+    EXPECT_EQ(testing::internal::GetCapturedStdout(), "Action: Reset");
 }
