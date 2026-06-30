@@ -3,6 +3,13 @@
 #include <array>
 #include <iostream>
 
+// TEST(GoogleTestExamples, TestCPPVersion) {
+//     testing::internal::CaptureStdout();
+//     std::cout << __cplusplus << '\n';
+//     const std::string output = testing::internal::GetCapturedStdout();
+//     EXPECT_EQ(output, "Hello World");
+// }
+
 TEST(GoogleTestExamples, EXPECT_EQ) {
     const int a = 10;
     const int b = 10;

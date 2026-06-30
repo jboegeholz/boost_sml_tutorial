@@ -24,7 +24,7 @@ struct Robot
         using namespace sml;
         return make_transition_table(
 
-        *state<Idle>+ event<Start>  / [] { std::cout << "Received <<Start>> Event";} = state<Driving>,
+        *state<Idle> + event<Start>  / [] { std::cout << "Received <<Start>> Event";} = state<Driving>,
             state<Driving> + event<Error> / [] { std::cout << "Received <<Error>> Event";} = state<Fault>,
             state<Driving> + event<Stop> / [] { std::cout << "Received <<Stop>> Event";}  = state<Idle>,
             state<Fault> + event<Reset>  / [] { std::cout << "Received <<Reset>> Event";} = state<Idle>
@@ -34,7 +34,7 @@ struct Robot
 };
 
 
-TEST(SimpleStateMachine, TestActions) {
+TEST(Actions, TestActions) {
     sml::sm<Robot> robot{};
 
     testing::internal::CaptureStdout();
