@@ -1,11 +1,22 @@
 cmake_minimum_required(VERSION 4.2)
-project(boost_sml_test)
+
+project(boost_sml_test LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(01_simple_state_machine 01_simple_state_machine.cpp)
-add_executable(02_state_machine_with_actions 02_state_machine_with_actions.cpp)
-add_executable(03_state_machine_with_guards 03_state_machine_with_guards.cpp)
-add_executable(04_sm_with_function_objects_actions 04_sm_with_function_objects_actions.cpp)
-add_executable(05_state_machine_with_udl 05_state_machine_with_udl.cpp)
+include(CTest)
 
+add_subdirectory(external/googletest)
+
+add_executable(01_simple_state_machine_test
+        tests/01_simple_state_machine_test.cpp
+)
+
+target_link_libraries(
+        01_simple_state_machine_test
+        PRIVATE
+        GTest::gtest_main
+)
+
+include(GoogleTest)
+gtest_discover_tests(01_simple_state_machine_test)
