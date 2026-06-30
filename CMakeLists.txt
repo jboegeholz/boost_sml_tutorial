@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 4.2)
+project(boost_sml_test)
+
+set(CMAKE_CXX_STANDARD 20)
+
+add_executable(01_simple_state_machine 01_simple_state_machine.cpp)
+add_executable(02_state_machine_with_actions 02_state_machine_with_actions.cpp)
+add_executable(025_sm_with_function_objects_actions 025_sm_with_function_objects_actions.cpp)
+add_executable(03_state_machine_with_udl 03_state_machine_with_udl.cpp)
+add_executable(04_state_machine_with_guards 03_state_machine_with_guards.cpp)
