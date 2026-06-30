@@ -18,5 +18,16 @@ target_link_libraries(
         GTest::gtest_main
 )
 
+add_executable(02_sm_with_actions_test
+        tests/02_sm_with_actions_test.cpp
+)
+
+target_link_libraries(
+        02_sm_with_actions_test
+        PRIVATE
+        GTest::gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(01_simple_state_machine_test)
+gtest_discover_tests(02_sm_with_actions_test)

@@ -24,7 +24,6 @@ struct Robot
         return make_transition_table(
 
         *state<Idle>+ event<Start>  = state<Driving>,
-            state<Idle> + event<Error> = state<Fault>,
             state<Driving> + event<Error> = state<Fault>,
             state<Driving> + event<Stop>  = state<Idle>,
             state<Fault> + event<Reset>  = state<Idle>
@@ -40,3 +39,37 @@ TEST(SimpleStateMachine, TestStartState) {
         EXPECT_STREQ(state.c_str(), "Idle");
     });
 }
+
+TEST(SimpleStateMachine, TestTransition) {
+    sml::sm<Robot> robot{};
+
+    robot.process_event(Start{});
+
+    robot.visit_current_states([](auto state) {
+        EXPECT_STREQ(state.c_str(), "Driving");
+    });
+
+    robot.process_event(Stop{});
+
+    robot.visit_current_states([](auto state) {
+        EXPECT_STREQ(state.c_str(), "Idle");
+    });
+
+    robot.process_event(Start{});
+
+    robot.visit_current_states([](auto state) {
+        EXPECT_STREQ(state.c_str(), "Driving");
+    });
+    robot.process_event(Error{});
+
+    robot.visit_current_states([](auto state) {
+        EXPECT_STREQ(state.c_str(), "Fault");
+    });
+
+    robot.process_event(Reset{});
+
+    robot.visit_current_states([](auto state) {
+        EXPECT_STREQ(state.c_str(), "Idle");
+    });
+}
+
